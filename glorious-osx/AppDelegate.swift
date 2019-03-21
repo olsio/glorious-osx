@@ -11,10 +11,28 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-
-
+    let statusBar = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+    let screenCapture: ScreenCapture = ScreenCapture()
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Insert code here to initialize your application
+        if let button = statusBar.button {
+            let cloudImage = NSImage(named: NSImage.Name("StatusBarIcon"))
+            button.image = cloudImage
+        }
+        self.createMenu()
+    }
+    
+    func createMenu() {
+        let menu = NSMenu()
+        
+        let screenCaptureItem = NSMenuItem(title: "Capture Screen", action: #selector(self.capture), keyEquivalent: "s")
+        menu.addItem(screenCaptureItem)
+        
+        statusBar.menu = menu
+    }
+    
+    @objc func capture() {
+        screenCapture.captureScreen()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
